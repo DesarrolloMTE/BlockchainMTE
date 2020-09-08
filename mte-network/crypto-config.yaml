@@ -1,0 +1,59 @@
+#Copyright Business Blockchainempresarial.com.  All Rights Reserved
+#Autor: Victor
+#Date: 31-10-2023
+#SPDX-License-Identifier: Apache-2.0
+
+OrdererOrgs:
+    - Name: MTE
+      Domain: mte.com
+      EnableNodeOUs: true
+      Specs:
+        - Hostname: MTE
+          SANA:
+            - localhost
+PeerOrgs:
+    - Name: Universidad de Nariño
+      Domain: udenar.mte.com
+      EnableNodeOUs: true
+      Template:
+        Count: 1
+        SANS:
+            - localhost
+      Users:
+        Count: 1
+    - Name: Universidad CESMAG
+      Domain: cesmag.mte.com
+      EnableNodeOUs: true
+      Template:
+        Count: 1
+        SANS:
+            - localhost
+      Users:
+        Count: 1 
+    - Name: Universidad Mariana
+      Domain: mariana.mte.com
+      EnableNodeOUs: true
+      Template:
+        Count: 1
+        SANS:
+            - localhost
+      Users:
+        Count: 1 
+    - Name: Universidad Cooperativa de Colombia
+      Domain: cooperativa.mte.com
+      EnableNodeOUs: true
+      Template:
+        Count: 1
+        SANS:
+            - localhost
+      Users:
+        Count: 1  
+    - Name: ASC Ingeniería S.A E.S.P
+      Domain: ascIngeniera.mte.com
+      EnableNodeOUs: true
+      Template:
+        Count: 1
+        SANS:
+            - localhost
+      Users:
+        Count: 1
