@@ -4,12 +4,12 @@
 #SPDX-License-Identifier: Apache-2.0
 
 OrdererOrgs:
-    - Name: MTE
+    - Name: Orderer
       Domain: mte.com
       EnableNodeOUs: true
       Specs:
-        - Hostname: MTE
-          SANA:
+        - Hostname: orderer
+          SANS:
             - localhost
 PeerOrgs:
     - Name: Universidad de Nariño
@@ -48,8 +48,8 @@ PeerOrgs:
             - localhost
       Users:
         Count: 1  
-    - Name: ASC Ingeniería S.A E.S.P
-      Domain: ascIngeniera.mte.com
+    - Name: Hospital Departamental de Nariño
+      Domain: hdepartamental.mte.com
       EnableNodeOUs: true
       Template:
         Count: 1

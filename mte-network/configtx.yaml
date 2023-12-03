@@ -108,25 +108,25 @@
             AnchorPeers:
                 - Host: peer0.cooperativa.mte.com
                   Port: 7051
-        - &ascIngeniera
-            Name: ascIngenieraMSP
-            ID: ascIngenieraMSP
-            MSPDir: crypto-config/peerOrganizations/ascIngeniera.mte.com/msp
+        - &hdepartamental
+            Name: hdepartamentalMSP
+            ID: hdepartamentalMSP
+            MSPDir: crypto-config/peerOrganizations/hdepartamental.mte.com/msp
             Policies:
                 Readers:
                     Type: Signature
-                    Rule: "OR('ascIngenieraMSP.admin', 'ascIngenieraMSP.peer', 'ascIngenieraMSP.client')"
+                    Rule: "OR('hdepartamentalMSP.admin', 'hdepartamentalMSP.peer', 'hdepartamentalMSP.client')"
                 Writers:
                     Type: Signature
-                    Rule: "OR('ascIngenieraMSP.admin', 'ascIngenieraMSP.client')"
+                    Rule: "OR('hdepartamentalMSP.admin', 'hdepartamentalMSP.client')"
                 Admins:
                     Type: Signature
-                    Rule: "OR('ascIngenieraMSP.admin')"
+                    Rule: "OR('hdepartamentalMSP.admin')"
                 Endorsement:
                     Type: Signature
-                    Rule: "OR('ascIngenieraMSP.peer')"
+                    Rule: "OR('hdepartamentalMSP.peer')"
             AnchorPeers:
-                - Host: peer0.ascIngeniera.mte.com
+                - Host: peer0.hdepartamental.mte.com
                   Port: 7051    
     ################################################################################
     #   SECTION: Capabilities
@@ -270,7 +270,7 @@
                         - *cesmag
                         - *mariana
                         - *cooperativa
-                        - *ascIngeniera
+                        - *hdepartamental
         ThreeOrgsChannel:
             Consortium: SampleConsortium
             <<: *ChannelDefaults
@@ -281,7 +281,7 @@
                     - *cesmag
                     - *mariana
                     - *cooperativa
-                    - *ascIngeniera
+                    - *hdepartamental
                 Capabilities:
                     <<: *ApplicationCapabilities
     
