@@ -10,11 +10,11 @@ configtxgen -profile ThreeOrgsOrdererGenesis -channelID system-channel -outputBl
 configtxgen -profile ThreeOrgsChannel -outputCreateChannelTx ./channel-artifacts/channel.tx -channelID channelmte
 
 # Anchor peers updates
-configtxgen -profile ThreeOrgsChannel -outputAnchorPeersUpdate ./channel-artifacts/udenarMSPanchors.tx -channelID energymte -asOrg udenarMSP
-configtxgen -profile ThreeOrgsChannel -outputAnchorPeersUpdate ./channel-artifacts/cesmagMSPanchors.tx -channelID energymte -asOrg cesmagMSP
-configtxgen -profile ThreeOrgsChannel -outputAnchorPeersUpdate ./channel-artifacts/marianaMSPanchors.tx -channelID energymte -asOrg marianaMSP
-configtxgen -profile ThreeOrgsChannel -outputAnchorPeersUpdate ./channel-artifacts/cooperativaMSPanchors.tx -channelID energymte -asOrg cooperativaMSP
-configtxgen -profile ThreeOrgsChannel -outputAnchorPeersUpdate ./channel-artifacts/hdepartamentalMSPanchors.tx -channelID energymte -asOrg hdepartamentalMSP
+configtxgen -profile ThreeOrgsChannel -outputAnchorPeersUpdate ./channel-artifacts/udenarMSPanchors.tx -channelID channelmte -asOrg udenarMSP
+configtxgen -profile ThreeOrgsChannel -outputAnchorPeersUpdate ./channel-artifacts/cesmagMSPanchors.tx -channelID channelmte -asOrg cesmagMSP
+configtxgen -profile ThreeOrgsChannel -outputAnchorPeersUpdate ./channel-artifacts/marianaMSPanchors.tx -channelID channelmte -asOrg marianaMSP
+configtxgen -profile ThreeOrgsChannel -outputAnchorPeersUpdate ./channel-artifacts/cooperativaMSPanchors.tx -channelID channelmte -asOrg cooperativaMSP
+configtxgen -profile ThreeOrgsChannel -outputAnchorPeersUpdate ./channel-artifacts/hdepartamentalMSPanchors.tx -channelID channelmte -asOrg hdepartamentalMSP
 
 # Create Docker volume
 docker volume create portainer_data

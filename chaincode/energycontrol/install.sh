@@ -2,12 +2,12 @@
 #www.blockchainempresarial.com
 #email: ricardo@blockchainempresarial.com
 
-export CHANNEL_NAME=marketplace
-export CHAINCODE_NAME=foodcontrol
+export CHANNEL_NAME=channelmte
+export CHAINCODE_NAME=energycontrol
 export CHAINCODE_VERSION=1
 export CC_RUNTIME_LANGUAGE=golang
 export CC_SRC_PATH="../../../chaincode/$CHAINCODE_NAME/"
-export ORDERER_CA=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/acme.com/orderers/orderer.acme.com/msp/tlscacerts/tlsca.acme.com-cert.pem
+export ORDERER_CA=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/mte.com/orderers/orderer.mte.com/msp/tlscacerts/tlsca.mte.com-cert.pem
 
 
 #Descarga dependencias
