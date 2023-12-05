@@ -3,6 +3,7 @@
 # crypto-config.yaml
 cryptogen generate --config=./crypto-config.yaml
 
+mkdir channel-artifacts
 # Genesis block
 configtxgen -profile ThreeOrgsOrdererGenesis -channelID system-channel -outputBlock ./channel-artifacts/genesis.block
 

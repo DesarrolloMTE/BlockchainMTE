@@ -22,46 +22,71 @@ export ORDERER_CA=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/orde
 peer lifecycle chaincode package ${CHAINCODE_NAME}.tar.gz --path ${CC_SRC_PATH} --lang ${CC_RUNTIME_LANGUAGE} --label ${CHAINCODE_NAME}_${CHAINCODE_VERSION} >&log.txt
 
 #peer lifecycle chaincode install example
-#first peer peer0.org1.acme.com
+#first peer peer0.udenar.mte.com
 peer lifecycle chaincode install ${CHAINCODE_NAME}.tar.gz 
 
-#Actualizar este  valor con el que obtengan al empaquetar el chaincode: foodcontrol_1:a1c05f648dd24bd94128913d73486644ad6c351f19c429c4c661444039688299
-export CC_PACKAGEID=a1c05f648dd24bd94128913d73486644ad6c351f19c429c4c661444039688299
+#peer lifecycle chaincode uninstall -n ${CHAINCODE_NAME} -v ${CHAINCODE_VERSION} -C ${CHANNEL_NAME}
 
-# peer0.org2
-CORE_PEER_MSPCONFIGPATH=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org2.acme.com/users/Admin@org2.acme.com/msp CORE_PEER_ADDRESS=peer0.org2.acme.com:7051 CORE_PEER_LOCALMSPID="Org2MSP" CORE_PEER_TLS_ROOTCERT_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org2.acme.com/peers/peer0.org2.acme.com/tls/ca.crt peer lifecycle chaincode install  ${CHAINCODE_NAME}.tar.gz
+#"\nPenergycontrol_1:ced2776c5f85643138bc0400906af76e2a737f434db9f57b8d66955de22cc26b\022\017energycontrol_1"
+# ced2776c5f85643138bc0400906af76e2a737f434db9f57b8d66955de22cc26b
 
-# peer0.org3
-CORE_PEER_MSPCONFIGPATH=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org3.acme.com/users/Admin@org3.acme.com/msp CORE_PEER_ADDRESS=peer0.org3.acme.com:7051 CORE_PEER_LOCALMSPID="Org3MSP" CORE_PEER_TLS_ROOTCERT_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org3.acme.com/peers/peer0.org3.acme.com/tls/ca.crt peer lifecycle chaincode install  ${CHAINCODE_NAME}.tar.gz
+
+#Actualizar este  valor con el que obtengan al empaquetar el chaincode: energycontrol_1:a1c05f648dd24bd94128913d73486644ad6c351f19c429c4c661444039688299
+export CC_PACKAGEID=ced2776c5f85643138bc0400906af76e2a737f434db9f57b8d66955de22cc26b
+
+# peer0.cesmag
+CORE_PEER_MSPCONFIGPATH=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/cesmag.mte.com/users/Admin@cesmag.mte.com/msp CORE_PEER_ADDRESS=peer0.cesmag.mte.com:7051 CORE_PEER_LOCALMSPID="cesmagMSP" CORE_PEER_TLS_ROOTCERT_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/cesmag.mte.com/peers/peer0.cesmag.mte.com/tls/ca.crt peer lifecycle chaincode install  ${CHAINCODE_NAME}.tar.gz
+
+# peer0.mariana 
+CORE_PEER_MSPCONFIGPATH=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/mariana.mte.com/users/Admin@mariana.mte.com/msp CORE_PEER_ADDRESS=peer0.mariana.mte.com:7051 CORE_PEER_LOCALMSPID="marianaMSP" CORE_PEER_TLS_ROOTCERT_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/mariana.mte.com/peers/peer0.mariana.mte.com/tls/ca.crt peer lifecycle chaincode install  ${CHAINCODE_NAME}.tar.gz
+
+# peer0.cooperativa
+CORE_PEER_MSPCONFIGPATH=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/cooperativa.mte.com/users/Admin@cooperativa.mte.com/msp CORE_PEER_ADDRESS=peer0.cooperativa.mte.com:7051 CORE_PEER_LOCALMSPID="cooperativaMSP" CORE_PEER_TLS_ROOTCERT_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/cooperativa.mte.com/peers/peer0.cooperativa.mte.com/tls/ca.crt peer lifecycle chaincode install  ${CHAINCODE_NAME}.tar.gz
+
+# peer0.hdepartamental
+CORE_PEER_MSPCONFIGPATH=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/hdepartamental.mte.com/users/Admin@hdepartamental.mte.com/msp CORE_PEER_ADDRESS=peer0.hdepartamental.mte.com:7051 CORE_PEER_LOCALMSPID="hdepartamentalMSP" CORE_PEER_TLS_ROOTCERT_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/hdepartamental.mte.com/peers/peer0.hdepartamental.mte.com/tls/ca.crt peer lifecycle chaincode install  ${CHAINCODE_NAME}.tar.gz
+
 
 
 
 #Endorsement policy for lifecycle chaincode 
 
-peer lifecycle chaincode approveformyorg --tls --cafile $ORDERER_CA --channelID $CHANNEL_NAME --name $CHAINCODE_NAME --version $CHAINCODE_VERSION --sequence 1 --waitForEvent --signature-policy "OR ('Org1MSP.peer','Org3MSP.peer')" --package-id foodcontrol_1:$CC_PACKAGEID
+peer lifecycle chaincode approveformyorg --tls --cafile $ORDERER_CA --channelID $CHANNEL_NAME --name $CHAINCODE_NAME --version $CHAINCODE_VERSION --sequence 1 --waitForEvent --signature-policy "OR ('udenarMSP.peer','marianaMSP.peer','cooperativaMSP.peer')"  --package-id energycontrol_1:$CC_PACKAGEID
 
-#Commit  the chaincode  for Org1
- peer lifecycle chaincode checkcommitreadiness --channelID $CHANNEL_NAME --name $CHAINCODE_NAME --version $CHAINCODE_VERSION --sequence 1 --signature-policy "OR ('Org1MSP.peer','Org3MSP.peer')" --output json
+
+#Commit  the chaincode  for udenar
+ peer lifecycle chaincode checkcommitreadiness --channelID $CHANNEL_NAME --name $CHAINCODE_NAME --version $CHAINCODE_VERSION --sequence 1 --signature-policy "OR ('udenarMSP.peer','marianaMSP.peer','cooperativaMSP.peer')"   --output json
  
  
  #commit chaincode FAILURE
-peer lifecycle chaincode commit -o orderer.acme.com:7050 --tls --cafile $ORDERER_CA  --peerAddresses peer0.org1.acme.com:7051 --tlsRootCertFiles /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org1.acme.com/peers/peer0.org1.acme.com/tls/ca.crt --channelID $CHANNEL_NAME --name $CHAINCODE_NAME --version $CHAINCODE_VERSION --sequence 1 --signature-policy "OR ('Org1MSP.peer','Org3MSP.peer')"
+peer lifecycle chaincode commit -o orderer.mte.com:7050 --tls --cafile $ORDERER_CA  --peerAddresses peer0.udenar.mte.com:7051 --tlsRootCertFiles /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/udenar.mte.com/peers/peer0.udenar.mte.com/tls/ca.crt --peerAddresses peer0.mariana.mte.com:7051 --tlsRootCertFiles /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/mariana.mte.com/peers/peer0.mariana.mte.com/tls/ca.crt --peerAddresses peer0.cooperativa.mte.com:7051 --tlsRootCertFiles /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/cooperativa.mte.com/peers/peer0.cooperativa.mte.com/tls/ca.crt --channelID $CHANNEL_NAME --name $CHAINCODE_NAME --version $CHAINCODE_VERSION --sequence 1 --signature-policy "OR ('udenarMSP.peer','marianaMSP.peer','cooperativaMSP.peer')" 
 
-#2020-09-03 17:39:05.756 UTC [chaincodeCmd] ClientWait -> INFO 046 txid [453ed408b77c198d7159904c94b8d44b4d7633273f200bafc87c5419901883c2] committed with status (ENDORSEMENT_POLICY_FAILURE) at peer0.org1.acme.com:7051
+#2020-09-03 17:39:05.756 UTC [chaincodeCmd] ClientWait -> INFO 046 txid [453ed408b77c198d7159904c94b8d44b4d7633273f200bafc87c5419901883c2] committed with status (ENDORSEMENT_POLICY_FAILURE) at peer0.udenar.mte.com:7051
+#Error: transaction invalidated with status (ENDORSEMENT_POLICY_FAILURE)
+
+peer lifecycle chaincode commit -o orderer.mte.com:7050 --tls --cafile $ORDERER_CA  --peerAddresses peer0.mariana.mte.com:7051 --tlsRootCertFiles /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/mariana.mte.com/peers/peer0.mariana.mte.com/tls/ca.crt --channelID $CHANNEL_NAME --name $CHAINCODE_NAME --version $CHAINCODE_VERSION --sequence 1 --signature-policy "OR ('udenarMSP.peer','marianaMSP.peer','cooperativaMSP.peer')" 
+
+
+peer lifecycle chaincode commit -o orderer.mte.com:7050 --tls --cafile $ORDERER_CA  --peerAddresses peer0.cooperativa.mte.com:7051 --tlsRootCertFiles /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/cooperativa.mte.com/peers/peer0.cooperativa.mte.com/tls/ca.crt --channelID $CHANNEL_NAME --name $CHAINCODE_NAME --version $CHAINCODE_VERSION --sequence 1 --signature-policy "OR ('udenarMSP.peer','marianaMSP.peer','cooperativaMSP.peer')" 
+
+
+#2020-09-03 17:39:05.756 UTC [chaincodeCmd] ClientWait -> INFO 046 txid [453ed408b77c198d7159904c94b8d44b4d7633273f200bafc87c5419901883c2] committed with status (ENDORSEMENT_POLICY_FAILURE) at peer0.udenar.mte.com:7051
 #Error: transaction invalidated with status (ENDORSEMENT_POLICY_FAILURE)
 
 
 
-#Let Org3 approve the chaincode package.
-CORE_PEER_MSPCONFIGPATH=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org3.acme.com/users/Admin@org3.acme.com/msp  CORE_PEER_ADDRESS=peer0.org3.acme.com:7051  CORE_PEER_LOCALMSPID="Org3MSP"  CORE_PEER_TLS_ROOTCERT_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org3.acme.com/peers/peer0.org3.acme.com/tls/ca.crt  peer lifecycle chaincode approveformyorg --tls --cafile /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/acme.com/orderers/orderer.acme.com/msp/tlscacerts/tlsca.acme.com-cert.pem --channelID $CHANNEL_NAME --name $CHAINCODE_NAME --version $CHAINCODE_VERSION --sequence 1 --waitForEvent --signature-policy "OR ('Org1MSP.peer','Org3MSP.peer')" --package-id foodcontrol_1:$CC_PACKAGEID
+#Let mariana approve the chaincode package.
+CORE_PEER_MSPCONFIGPATH=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/mariana.mte.com/users/Admin@mariana.mte.com/msp  CORE_PEER_ADDRESS=peer0.mariana.mte.com:7051  CORE_PEER_LOCALMSPID="marianaMSP"  CORE_PEER_TLS_ROOTCERT_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/mariana.mte.com/peers/peer0.mariana.mte.com/tls/ca.crt  peer lifecycle chaincode approveformyorg --tls --cafile /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/mte.com/orderers/orderer.mte.com/msp/tlscacerts/tlsca.mte.com-cert.pem --channelID $CHANNEL_NAME --name $CHAINCODE_NAME --version $CHAINCODE_VERSION --sequence 1 --waitForEvent --signature-policy "OR ('udenarMSP.peer','marianaMSP.peer','cooperativaMSP.peer')"  --package-id energycontrol_1:$CC_PACKAGEID
 
+
+CORE_PEER_MSPCONFIGPATH=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/cooperativa.mte.com/users/Admin@cooperativa.mte.com/msp  CORE_PEER_ADDRESS=peer0.cooperativa.mte.com:7051  CORE_PEER_LOCALMSPID="cooperativaMSP"  CORE_PEER_TLS_ROOTCERT_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/cooperativa.mte.com/peers/peer0.cooperativa.mte.com/tls/ca.crt  peer lifecycle chaincode approveformyorg --tls --cafile /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/mte.com/orderers/orderer.mte.com/msp/tlscacerts/tlsca.mte.com-cert.pem --channelID $CHANNEL_NAME --name $CHAINCODE_NAME --version $CHAINCODE_VERSION --sequence 1 --waitForEvent --signature-policy "OR ('udenarMSP.peer','marianaMSP.peer','cooperativaMSP.peer')"   --package-id energycontrol_1:$CC_PACKAGEID
 
 #check the chaincode commit 
- peer lifecycle chaincode checkcommitreadiness --channelID $CHANNEL_NAME --name $CHAINCODE_NAME --version $CHAINCODE_VERSION --sequence 1 --signature-policy "OR ('Org1MSP.peer','Org3MSP.peer')" --output json
+ peer lifecycle chaincode checkcommitreadiness --channelID $CHANNEL_NAME --name $CHAINCODE_NAME --version $CHAINCODE_VERSION --sequence 1 --signature-policy "OR ('udenarMSP.peer','marianaMSP.peer','cooperativaMSP.peer')"  --output json
  
  #commit chaincode SUCCESS
- #Now commit chaincode. Note that we need to specify peerAddresses of both Org1 and Org3 (and their CA as TLS is enabled).
-peer lifecycle chaincode commit -o orderer.acme.com:7050 --tls --cafile $ORDERER_CA --peerAddresses peer0.org1.acme.com:7051 --tlsRootCertFiles /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org1.acme.com/peers/peer0.org1.acme.com/tls/ca.crt --peerAddresses peer0.org3.acme.com:7051 --tlsRootCertFiles /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org3.acme.com/peers/peer0.org3.acme.com/tls/ca.crt --channelID $CHANNEL_NAME --name $CHAINCODE_NAME --version $CHAINCODE_VERSION --sequence 1 --signature-policy "OR ('Org1MSP.peer','Org3MSP.peer')"
+ #Now commit chaincode. Note that we need to specify peerAddresses of both udenar and mariana (and their CA as TLS is enabled).
+peer lifecycle chaincode commit -o orderer.mte.com:7050 --tls --cafile $ORDERER_CA --peerAddresses peer0.udenar.mte.com:7051 --tlsRootCertFiles /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/udenar.mte.com/peers/peer0.udenar.mte.com/tls/ca.crt --peerAddresses peer0.mariana.mte.com:7051 --tlsRootCertFiles /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/mariana.mte.com/peers/peer0.mariana.mte.com/tls/ca.crt --channelID $CHANNEL_NAME --name $CHAINCODE_NAME --version $CHAINCODE_VERSION --sequence 1 --signature-policy "OR ('udenarMSP.peer','marianaMSP.peer')"
 
 #check the status of chaincode commit
 peer lifecycle chaincode querycommitted --channelID $CHANNEL_NAME --name $CHAINCODE_NAME --output json
@@ -71,9 +96,11 @@ peer lifecycle chaincode querycommitted --channelID $CHANNEL_NAME --name $CHAINC
 ############################################################################
 #chaincode is committed and useable in the fabric network
 #INIT LEDGER
-#peer chaincode invoke -o orderer.acme.com:7050 --tls --cafile $ORDERER_CA -C  $CHANNEL_NAME  -n $CHAINCODE_NAME -c '{"Args":["InitLedger"]}'
-#Org1 invokes set() with key “car01” and value “........”.
-peer chaincode invoke -o orderer.acme.com:7050 --tls --cafile $ORDERER_CA -C  $CHANNEL_NAME  -n $CHAINCODE_NAME -c '{"Args":["Set","did:3","ricardo","banana"]}'
+#peer chaincode invoke -o orderer.mte.com:7050 --tls --cafile $ORDERER_CA -C  $CHANNEL_NAME  -n $CHAINCODE_NAME -c '{"Args":["InitLedger"]}'
+#udenar invokes set() with key “car01” and value “........”.
+peer chaincode invoke -o orderer.mte.com:7050 --tls --cafile $ORDERER_CA -C  $CHANNEL_NAME  -n $CHAINCODE_NAME -c '{"Args":["Set","did:3","ricardo","banana"]}'
+
+ peer chaincode invoke -o orderer.mte.com:7050 --tls --cafile $ORDERER_CA -C  $CHANNEL_NAME  -n $CHAINCODE_NAME -c '{"Args":["Set","did:3","ricardo","victor","16"]}'
 
 #check the value of key “car01”
 peer chaincode query -C $CHANNEL_NAME -n $CHAINCODE_NAME -c '{"Args":["Query","did:3"]}'
@@ -81,4 +108,4 @@ peer chaincode query -C $CHANNEL_NAME -n $CHAINCODE_NAME -c '{"Args":["Query","d
 
 
 #ERROR CASE Org2 invoke CreateCar().
-CORE_PEER_MSPCONFIGPATH=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org2.acme.com/users/Admin@org2.acme.com/msp  CORE_PEER_ADDRESS=peer0.org2.acme.com:7051 CORE_PEER_LOCALMSPID="Org2MSP" CORE_PEER_TLS_ROOTCERT_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org2.acme.com/peers/peer0.org2.acme.com/tls/ca.crt  peer chaincode invoke -o orderer.acme.com:7050 --tls --cafile $ORDERER_CA -C  $CHANNEL_NAME  -n $CHAINCODE_NAME -c '{"Args":["Set","did:4","marianela","avacado"]}'
+CORE_PEER_MSPCONFIGPATH=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/cesmag.mte.com/users/Admin@cesmag.mte.com/msp  CORE_PEER_ADDRESS=peer0.cesmag.mte.com:7051 CORE_PEER_LOCALMSPID="cesmagMSP" CORE_PEER_TLS_ROOTCERT_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/cesmag.mte.com/peers/peer0.cesmag.mte.com/tls/ca.crt  peer chaincode invoke -o orderer.mte.com:7050 --tls --cafile $ORDERER_CA -C  $CHANNEL_NAME  -n $CHAINCODE_NAME -c '{"Args":["Set","did:4","marianela","avacado"]}'
