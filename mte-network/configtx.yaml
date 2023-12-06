@@ -168,7 +168,7 @@
                 Rule: "ANY Endorsement" # <-- This is the default policy for channels cambiar por ANY Endorsement
             Endorsement:
                 Type: ImplicitMeta
-                Rule: "ANY Endorsement" # <-- This is the default policy for channels cambiar por ANY Endorsement
+                Rule: "MAJORITY Endorsement" # <-- This is the default policy for channels cambiar por ANY Endorsement
     
         Capabilities:
             <<: *ApplicationCapabilities    
