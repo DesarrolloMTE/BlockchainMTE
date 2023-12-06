@@ -27,13 +27,15 @@ peer lifecycle chaincode install ${CHAINCODE_NAME}.tar.gz
 
 #peer lifecycle chaincode uninstall -n ${CHAINCODE_NAME} -v ${CHAINCODE_VERSION} -C ${CHANNEL_NAME}
 
-#\nPenergycontrol_1:2fa2b78d083696ac046cb462c9dfdaff57cbd88cadd49a8ce061085f142168f7\022\017energycontrol_1
-# 2fa2b78d083696ac046cb462c9dfdaff57cbd88cadd49a8ce061085f142168f7
+#\nPenergycontrol_1:d2574f5d7afb114f219b168577f969ed1798da6c5201afa6e3068f0cfca615e7\022\017energycontrol_1
+
+# d2574f5d7afb114f219b168577f969ed1798da6c5201afa6e3068f0cfca615e7
+
 
 
 
 #Actualizar este  valor con el que obtengan al empaquetar el chaincode: energycontrol_1:a1c05f648dd24bd94128913d73486644ad6c351f19c429c4c661444039688299
-export CC_PACKAGEID=2fa2b78d083696ac046cb462c9dfdaff57cbd88cadd49a8ce061085f142168f7
+export CC_PACKAGEID=d2574f5d7afb114f219b168577f969ed1798da6c5201afa6e3068f0cfca615e7
 
 # peer0.cesmag
 CORE_PEER_MSPCONFIGPATH=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/cesmag.mte.com/users/Admin@cesmag.mte.com/msp CORE_PEER_ADDRESS=peer0.cesmag.mte.com:7051 CORE_PEER_LOCALMSPID="cesmagMSP" CORE_PEER_TLS_ROOTCERT_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/cesmag.mte.com/peers/peer0.cesmag.mte.com/tls/ca.crt peer lifecycle chaincode install  ${CHAINCODE_NAME}.tar.gz
@@ -70,12 +72,7 @@ CORE_PEER_MSPCONFIGPATH=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypt
 peer lifecycle chaincode commit -o orderer.mte.com:7050 --tls --cafile $ORDERER_CA  --peerAddresses peer0.udenar.mte.com:7051 --tlsRootCertFiles /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/udenar.mte.com/peers/peer0.udenar.mte.com/tls/ca.crt --peerAddresses peer0.mariana.mte.com:7051 --tlsRootCertFiles /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/mariana.mte.com/peers/peer0.mariana.mte.com/tls/ca.crt --peerAddresses peer0.cooperativa.mte.com:7051 --tlsRootCertFiles /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/cooperativa.mte.com/peers/peer0.cooperativa.mte.com/tls/ca.crt --channelID $CHANNEL_NAME --name $CHAINCODE_NAME --version $CHAINCODE_VERSION --sequence 1 --signature-policy "OR ('udenarMSP.peer','marianaMSP.peer','cooperativaMSP.peer')" 
 
 
-#check the chaincode commit 
- peer lifecycle chaincode checkcommitreadiness --channelID $CHANNEL_NAME --name $CHAINCODE_NAME --version $CHAINCODE_VERSION --sequence 1 --signature-policy "OR ('udenarMSP.peer','marianaMSP.peer','cooperativaMSP.peer')"  --output json
- 
- #commit chaincode SUCCESS
- #Now commit chaincode. Note that we need to specify peerAddresses of both udenar and mariana (and their CA as TLS is enabled).
-peer lifecycle chaincode commit -o orderer.mte.com:7050 --tls --cafile $ORDERER_CA --peerAddresses peer0.udenar.mte.com:7051 --tlsRootCertFiles /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/udenar.mte.com/peers/peer0.udenar.mte.com/tls/ca.crt --peerAddresses peer0.mariana.mte.com:7051 --tlsRootCertFiles /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/mariana.mte.com/peers/peer0.mariana.mte.com/tls/ca.crt --channelID $CHANNEL_NAME --name $CHAINCODE_NAME --version $CHAINCODE_VERSION --sequence 1 --signature-policy "OR ('udenarMSP.peer','marianaMSP.peer')"
+
 
 #check the status of chaincode commit
 peer lifecycle chaincode querycommitted --channelID $CHANNEL_NAME --name $CHAINCODE_NAME --output json
@@ -91,6 +88,8 @@ peer chaincode invoke -o orderer.mte.com:7050 --tls --cafile $ORDERER_CA -C  $CH
 
  peer chaincode invoke -o orderer.mte.com:7050 --tls --cafile $ORDERER_CA -C  $CHANNEL_NAME  -n $CHAINCODE_NAME -c '{"Args":["Set","did:3","ricardo","victor","16"]}'
 
+peer chaincode invoke -o orderer.mte.com:7050 --tls --cafile $ORDERER_CA -C $CHANNEL_NAME -n $CHAINCODE_NAME -c '{"Args":["Set", "transactionID123", "ConsumerOrg1", "100", "ProducerOrg1"]}' --waitForEvent
+
 #check the value of key “car01”
 peer chaincode query -C $CHANNEL_NAME -n $CHAINCODE_NAME -c '{"Args":["Query","did:3"]}'
 
@@ -105,4 +104,20 @@ CORE_PEER_MSPCONFIGPATH=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypt
 
 
 
-a
+
+#/ Inicia la transacion de energia, con una peticion de consumo de 100 por parte de la mariana
+
+peer chaincode invoke -o orderer.mte.com:7050 --tls --cafile $ORDERER_CA -C $CHANNEL_NAME -n $CHAINCODE_NAME -c '{"Args":["Set", "ID123", "mariana", "100", "ProducerOrg1"]}' --waitForEvent
+
+
+# primer aporte de energia de 50 por parte de udenar
+
+peer chaincode invoke -o orderer.mte.com:7050 --tls --cafile $ORDERER_CA -C $CHANNEL_NAME -n $CHAINCODE_NAME -c '{"Args":["Contribute", "ID123", "udenar", "50"]}' --waitForEvent
+
+
+# primer aporte de energia de 40 por parte de cooperativa
+
+peer chaincode invoke -o orderer.mte.com:7050 --tls --cafile $ORDERER_CA -C $CHANNEL_NAME -n $CHAINCODE_NAME -c '{"Args":["Contribute", "ID123", "cooperativa", "40"]}' --waitForEvent
+
+# segundo aporte de energia de 10 por parte de cooperativa
+peer chaincode invoke -o orderer.mte.com:7050 --tls --cafile $ORDERER_CA -C $CHANNEL_NAME -n $CHAINCODE_NAME -c '{"Args":["Contribute", "ID123", "cooperativa", "10"]}' --waitForEvent
