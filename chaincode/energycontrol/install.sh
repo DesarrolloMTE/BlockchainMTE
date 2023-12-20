@@ -27,15 +27,14 @@ peer lifecycle chaincode install ${CHAINCODE_NAME}.tar.gz
 
 #peer lifecycle chaincode uninstall -n ${CHAINCODE_NAME} -v ${CHAINCODE_VERSION} -C ${CHANNEL_NAME}
 
-#\nPenergycontrol_1:d2574f5d7afb114f219b168577f969ed1798da6c5201afa6e3068f0cfca615e7\022\017energycontrol_1
-
-# d2574f5d7afb114f219b168577f969ed1798da6c5201afa6e3068f0cfca615e7
+#energycontrol_1:d1466bf583e3d02fb6b2a4de0913ff26bebdf73eff49fff815cb556dff11979d
+# d1466bf583e3d02fb6b2a4de0913ff26bebdf73eff49fff815cb556dff11979d
 
 
 
 
 #Actualizar este  valor con el que obtengan al empaquetar el chaincode: energycontrol_1:a1c05f648dd24bd94128913d73486644ad6c351f19c429c4c661444039688299
-export CC_PACKAGEID=d2574f5d7afb114f219b168577f969ed1798da6c5201afa6e3068f0cfca615e7
+export CC_PACKAGEID=d1466bf583e3d02fb6b2a4de0913ff26bebdf73eff49fff815cb556dff11979d
 
 # peer0.cesmag
 CORE_PEER_MSPCONFIGPATH=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/cesmag.mte.com/users/Admin@cesmag.mte.com/msp CORE_PEER_ADDRESS=peer0.cesmag.mte.com:7051 CORE_PEER_LOCALMSPID="cesmagMSP" CORE_PEER_TLS_ROOTCERT_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/cesmag.mte.com/peers/peer0.cesmag.mte.com/tls/ca.crt peer lifecycle chaincode install  ${CHAINCODE_NAME}.tar.gz
@@ -79,21 +78,6 @@ peer lifecycle chaincode querycommitted --channelID $CHANNEL_NAME --name $CHAINC
 
 
 
-############################################################################
-#chaincode is committed and useable in the fabric network
-#INIT LEDGER
-#peer chaincode invoke -o orderer.mte.com:7050 --tls --cafile $ORDERER_CA -C  $CHANNEL_NAME  -n $CHAINCODE_NAME -c '{"Args":["InitLedger"]}'
-#udenar invokes set() with key “car01” and value “........”.
-peer chaincode invoke -o orderer.mte.com:7050 --tls --cafile $ORDERER_CA -C  $CHANNEL_NAME  -n $CHAINCODE_NAME -c '{"Args":["Set","did:3","ricardo","banana"]}'
-
- peer chaincode invoke -o orderer.mte.com:7050 --tls --cafile $ORDERER_CA -C  $CHANNEL_NAME  -n $CHAINCODE_NAME -c '{"Args":["Set","did:3","ricardo","victor","16"]}'
-
-peer chaincode invoke -o orderer.mte.com:7050 --tls --cafile $ORDERER_CA -C $CHANNEL_NAME -n $CHAINCODE_NAME -c '{"Args":["Set", "transactionID123", "ConsumerOrg1", "100", "ProducerOrg1"]}' --waitForEvent
-
-#check the value of key “car01”
-peer chaincode query -C $CHANNEL_NAME -n $CHAINCODE_NAME -c '{"Args":["Query","did:3"]}'
-
-
 
 #ERROR CASE Org2 invoke CreateCar().
 CORE_PEER_MSPCONFIGPATH=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/cesmag.mte.com/users/Admin@cesmag.mte.com/msp  CORE_PEER_ADDRESS=peer0.cesmag.mte.com:7051 CORE_PEER_LOCALMSPID="cesmagMSP" CORE_PEER_TLS_ROOTCERT_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/cesmag.mte.com/peers/peer0.cesmag.mte.com/tls/ca.crt  peer chaincode invoke -o orderer.mte.com:7050 --tls --cafile $ORDERER_CA -C  $CHANNEL_NAME  -n $CHAINCODE_NAME -c '{"Args":["Set","did:5","marianela","manuel","20"]}'
@@ -102,22 +86,20 @@ CORE_PEER_MSPCONFIGPATH=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypt
 
 CORE_PEER_MSPCONFIGPATH=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/mariana.mte.com/users/Admin@mariana.mte.com/msp  CORE_PEER_ADDRESS=peer0.mariana.mte.com:7051 CORE_PEER_LOCALMSPID="marianaMSP" CORE_PEER_TLS_ROOTCERT_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/mariana.mte.com/peers/peer0.mariana.mte.com/tls/ca.crt  peer chaincode invoke -o orderer.mte.com:7050 --tls --cafile $ORDERER_CA -C  $CHANNEL_NAME  -n $CHAINCODE_NAME -c '{"Args":["Set","did:4","marianela","daniel","20"]}'
 
+#================================================================================
+
+
+peer chaincode invoke -o orderer.mte.com:7050 --tls --cafile $ORDERER_CA -C  $CHANNEL_NAME  -n $CHAINCODE_NAME -c '{"Args":["Set","did:3","100.4"]}'
 
 
 
-#/ Inicia la transacion de energia, con una peticion de consumo de 100 por parte de la mariana
+peer chaincode invoke -o orderer.mte.com:7050 --tls --cafile $ORDERER_CA -C $CHANNEL_NAME -n $CHAINCODE_NAME -c '{"Args":["Contribute", "did:5", "10001", "10.0"]}' --waitForEvent
 
-peer chaincode invoke -o orderer.mte.com:7050 --tls --cafile $ORDERER_CA -C $CHANNEL_NAME -n $CHAINCODE_NAME -c '{"Args":["Set", "ID123", "mariana", "100", "ProducerOrg1"]}' --waitForEvent
+peer chaincode invoke -o orderer.mte.com:7050 --tls --cafile $ORDERER_CA -C $CHANNEL_NAME -n $CHAINCODE_NAME -c '{"Args":["Contribute", "did:5", "10002", "11.0"]}' --waitForEvent
 
+peer chaincode invoke -o orderer.mte.com:7050 --tls --cafile $ORDERER_CA -C $CHANNEL_NAME -n $CHAINCODE_NAME -c '{"Args":["Contribute", "did:5", "10003", "10.4"]}' --waitForEvent
 
-# primer aporte de energia de 50 por parte de udenar
+peer chaincode invoke -o orderer.mte.com:7050 --tls --cafile $ORDERER_CA -C $CHANNEL_NAME -n $CHAINCODE_NAME -c '{"Args":["Contribute", "did:5", "10004", "20.0"]}' --waitForEvent
 
-peer chaincode invoke -o orderer.mte.com:7050 --tls --cafile $ORDERER_CA -C $CHANNEL_NAME -n $CHAINCODE_NAME -c '{"Args":["Contribute", "ID123", "udenar", "50"]}' --waitForEvent
+peer chaincode invoke -o orderer.mte.com:7050 --tls --cafile $ORDERER_CA -C $CHANNEL_NAME -n $CHAINCODE_NAME -c '{"Args":["Contribute", "did:5", "10005", "49.0"]}' --waitForEvent
 
-
-# primer aporte de energia de 40 por parte de cooperativa
-
-peer chaincode invoke -o orderer.mte.com:7050 --tls --cafile $ORDERER_CA -C $CHANNEL_NAME -n $CHAINCODE_NAME -c '{"Args":["Contribute", "ID123", "cooperativa", "40"]}' --waitForEvent
-
-# segundo aporte de energia de 10 por parte de cooperativa
-peer chaincode invoke -o orderer.mte.com:7050 --tls --cafile $ORDERER_CA -C $CHANNEL_NAME -n $CHAINCODE_NAME -c '{"Args":["Contribute", "ID123", "cooperativa", "10"]}' --waitForEvent

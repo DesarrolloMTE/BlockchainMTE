@@ -44,7 +44,10 @@ func (s *SmartContract) Set(ctx contractapi.TransactionContextInterface, transac
 	if exists {
 		return fmt.Errorf("El contrato con ID %s ya existe", transactionId)
 	}
-
+	// Datos insuficientes para crear el contrato
+	if len(transactionId) == 0 || Pedido <= 0 {
+		return fmt.Errorf("Se proporcionaron datos insuficientes para crear el contrato")
+	}
 	// Crear el contrato si no existe
 	transaction := Contrato{
 		TotalIteraciones: 0,
@@ -105,7 +108,7 @@ func (s *SmartContract) Contribute(ctx contractapi.TransactionContextInterface, 
 
 	// Validar que la contribución no supere el límite establecido por la organización
 	if Contribucion+transaction.Total > transaction.Pedido {
-		return fmt.Errorf("Contribution amount exceeds the limit set by organization %d", transaction.IdOrg)
+		return fmt.Errorf("Contribution amount exceeds the limit set by organization %d", IdOrg)
 	}
 
 	// Actualizar la contribución de la organización en el contrato
@@ -117,12 +120,14 @@ func (s *SmartContract) Contribute(ctx contractapi.TransactionContextInterface, 
 		}
 	}
 
-	// Actualizar el promedio de contribucion
-	transaction.Promedio = transaction.Total / float64(len(transaction.Organizaciones))
+	
 
 	// Actualizar el total aportado en el contrato
 	transaction.Total += Contribucion
 
+	// Actualizar el promedio de contribucion
+	transaction.Promedio = transaction.Total / float64(len(transaction.Organizaciones))
+	
 	// Incrementar la variable Iteracion en el contrato
 	transaction.TotalIteraciones++
 
